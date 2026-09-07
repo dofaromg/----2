@@ -200,6 +200,51 @@ Notion property 保存建立時間 2025-12-03T17:45:13Z、更新時間 2025-12-0
 - https://app.notion.com/p/3288eeeec5b58198bc19ea3c994958c1
 - https://app.notion.com/p/320a026f66d54a3f923ab0e6361ebbee
 
+### 4A.5 FlowSeed 七層結構的可驗證 Notion 時間鏈
+
+`FlowSeed 七層架構` 的 Notion property 保存建立時間 `2025-11-08T17:11:06.689Z`、更新時間 `2025-12-07T06:16:56.079Z`。正文逐層列出：
+
+`L1 System Overview → L2 Structural Decomposition → L3 Semantic Particles → L4 Subparticle Atoms → L5 Quantum Field Overlay → L6 Conscious Loop → L7 Semantic Memory Mesh`
+
+同頁亦保存七個對應 `_FULL.md` 檔名、每檔 byte 數、四維映射及 `FlowSeed.qflpkg` 約 14.2KB 的描述。這是目前 B02 已查到、時間最早且具體到層名與檔案大小的 `VERIFIED_NOTION_PAGE_TIME`；它證明 2025-11-08 時工作區已有這組結構正文，不等於證明頁內所列 `.qflpkg` 原始位元、hash 或更早 2025-06 首次建立時間。
+
+`FlowSeed Package Contents 套件結構` 建立於 `2025-12-03T20:19:58.699Z`，再列 `FlowSeed.Manifest.txt`（568 bytes）、`flpkg_metadata.json`（759 bytes）與同一組七層檔名／大小，並把依賴寫為 FlowOS／FluinOS、整合項寫為 Echo.Persona、FlowAgent 與四維模組空間。兩頁內容交叉一致，形成 `CROSS_PAGE_STRUCTURAL_CORROBORATION`；但目前仍是 manifest-like 描述，尚未取回實際 package／manifest／hash。
+
+來源：
+
+- https://app.notion.com/p/001f05ef5c8a4291ac7561675770343b
+- https://app.notion.com/p/352dddeb8af74f3e886f7abcb6705b24
+
+### 4A.6 FlowAgent 母體記憶球與恢復鏈
+
+`FlowAgent – Mother Memory Sphere` 的 Notion 最後編輯時間為 `2025-12-19T08:22:59.216Z`。其核心段保存三類母體記憶：結構記憶、粒子記憶、人格節奏，並列出 `FlowAgent.TotalMotherPersonaSphere.v2.flpkg`、`FlowPersona.FusionEngine.Core.sync.json`、`ParticleGlobe_nodes.json`、`particles.json`、`FlowAgent_UniverseModuleGraph_v2k7.json`、`Fluin_Language_System_Overview_v1.txt`、`seed.fltnz`、`manifest.yml`、`MemoryMotherSync.py`、`particle_mother.py` 等種子／映射／恢復檔名。
+
+其結構邏輯可整理為：
+
+`snapshot = function tree`；`tag = topology link`；`persona = combination(particles, fluin, jumpNodes, rhythm)`。
+
+此頁把 FlowSeed／FlowAgent／粒子／人格／恢復路徑接為同一父鏈，證據狀態為 `CORE_SECTION_VERIFIED_NOTION_TIME`。但核心段之後含多批後續附件與其他頁嵌入，故整頁標為 `APPENDED_MIXED_ATTACHMENTS`，不得把後附材料全部倒算為 2025-12-19 原始內容。
+
+來源：https://app.notion.com/p/75314b13d6f7465bb40757880562b594
+
+### 4A.7 反推／縮放公式與後續收斂頁
+
+`反推公式與反向工程整合系統` 頁內標示建立於 `2026-02-12 01:23 CST`，Notion 最後編輯於 2026-05-06。正文保存：
+
+- 原點聚合：`P₀ = ΣδP₀ · N_seed · η_seed`
+- 原點拆解：`δP₀[] = P₀ / (N_seed · η_seed)`
+- 正向放大：`P_{k+1} = N_k · P_k · η_k`
+- 反向縮小：`P_k = P_{k+1} / (N_k · η_k)`
+
+同頁包含反向時間線、粒子逆運算、Merkle、AES、SimHash 與往返檢查的程式片段。這能證明公式與檢查方法已被具體書寫；頁面所稱「所有公式已驗證／100% 可逆」目前沒有隨頁測試輸出、測試向量、執行環境或 commit，因此只記為 `CLAIMED_VERIFICATION / TEST_ARTIFACT_MISSING`。
+
+`MRL 完整系統復盤 — 從 FlowSeed 到 FLTNZ 的全貌`（2026-05-07 更新）則把五段循環 `Origin → Genesis → CoGenesis → Persona(reverse) → Soul(scale) → Origin`、多個 `FlowSeed.*` package 名稱、八類反推公式、粒子式、跳點 `L5:H3:T42` 與 FLTNZ 結構收斂於一頁。它是後續 `CONVERGENCE_RECAP`，可用於證明跨模組關係已被整理，不可取代 2025 原件時間或實際 package。
+
+來源：
+
+- https://app.notion.com/p/a9f7b03b3f0249a2851d7288ffb3fa13
+- https://app.notion.com/p/9b3afb295d7a49f89d016208defbd0a2
+
 ## 5. 第一批來源鏈連結圖
 
 ```mermaid
@@ -228,6 +273,9 @@ flowchart TD
 | C-006 | 2025-07-23 父鏈頁混入後續內容 | 前段為 FlowAgent 語場建構大綱 | 後段混入粒子核心快速入門與 Hugging Face Croissant 內容 | `MIXED_CONTENT_CONTAMINATION`；分段引用並回查原始 TXT／ZIP／hash |
 | C-007 | 2026-03-11 工程包數量口徑 | 分類表總計 58 | 工程包 60 檔；R2 記錄 61 objects（含 tar） | `COUNT_SCOPE_MISMATCH`；取回 tar manifest 與 object list 後分離 payload／package／object |
 | C-008 | 2026-05 上傳統整完成宣告與 backlog | 頁面標題／狀態稱分類完成 | 同頁為 67 項、54 已整理、13 待處理，另有 missing 及待解析 | 「統整完成」只表示盤點完成，不表示內容／工程完成 |
+| C-009 | 反推頁的驗證宣告缺少執行證據 | 正文稱所有公式已驗證、100% 可逆 | 隨頁僅見公式及程式片段，未見測試輸出／向量／環境／commit | `CLAIMED_VERIFICATION / TEST_ARTIFACT_MISSING`；先保存主張，不升格為 Runtime verified |
+| C-010 | Mother Memory Sphere 時間邊界混合 | 核心段可定位至 2025-12-19 頁面狀態 | 後段混入多批後續附件／頁面 | `CORE_SECTION_VERIFIED / APPENDED_MIXED_ATTACHMENTS`；逐附件另取 metadata |
+| C-011 | FlowSeed manifest 描述與實際套件尚未閉合 | 2025-11／12 兩頁的層名、檔名、byte 數一致 | 尚未取得 `.qflpkg`、manifest 原檔與 hash | `CROSS_PAGE_STRUCTURAL_CORROBORATION`，不是 `VERIFIED_PRIMARY_ARTIFACT` |
 
 ## 7. 與外部來源比較的證據規則
 
@@ -244,9 +292,9 @@ flowchart TD
 | 項目 | 本輪交付 | Missing／Mismatch | Coverage |
 |---|---|---|---|
 | 全域批次主索引 | B00–B10 路由已固定 | 無 | 100% blueprint |
-| 第一批正文查閱 | 本輪新讀／重讀 8 個核心入口與工程頁；並沿用本任務前序已完整讀取的 Top Source Layer、Origin Registry | 無 | 本輪 8/8；B00／B01 引用核心來源 10/10 可追溯 |
+| 第一批正文查閱 | B00／B01 核心入口已核；B02 本檢查點新增核對 5 個 FlowSeed／FlowAgent／反推／收斂頁 | 原始 package、manifest、hash、測試輸出仍缺 | 新增 5/5 正文可追溯；不代表 B02 全部完成 |
 | 父子／依賴鏈 | 已建立 Workspace→Source→Origin／Foundation→Registry→Master→Runtime／Product | 後續領域子頁待各批補 | B00／B01 PASS |
-| 差異台帳 | 8 個差異／污染風險已記錄 | 狀態、數量口徑與原件證據仍待後續批核 | 8/8 captured |
+| 差異台帳 | 11 個差異／污染／證據層級風險已記錄 | 狀態、數量口徑與原件／Runtime 證據仍待後續批核 | 11/11 captured |
 | 全工作區逐頁語義稽核 | 尚未完成 | B02–B10、原始檔、Runtime artifact | 未達 100% |
 
 ### Completion Gate
@@ -276,6 +324,11 @@ flowchart TD
 - [MRL 產品資料夾 — MrLiouWord 體系總索引](https://app.notion.com/p/3288eeeec5b58198bc19ea3c994958c1)
 - [v9.0 三路雲端存取完成](https://app.notion.com/p/31f8eeeec5b581d09409c99cd68f2bf8)
 - [最近上傳檔案統整報告 — 2026-05-25](https://app.notion.com/p/320a026f66d54a3f923ab0e6361ebbee)
+- [FlowSeed 七層架構](https://app.notion.com/p/001f05ef5c8a4291ac7561675770343b)
+- [FlowSeed Package Contents 套件結構](https://app.notion.com/p/352dddeb8af74f3e886f7abcb6705b24)
+- [FlowAgent – Mother Memory Sphere](https://app.notion.com/p/75314b13d6f7465bb40757880562b594)
+- [反推公式與反向工程整合系統](https://app.notion.com/p/a9f7b03b3f0249a2851d7288ffb3fa13)
+- [MRL 完整系統復盤 — 從 FlowSeed 到 FLTNZ 的全貌](https://app.notion.com/p/9b3afb295d7a49f89d016208defbd0a2)
 
 ---
 
