@@ -40,7 +40,7 @@
 | B00 | Workspace inventory／導航入口／快照差異 | Workspace Complete Index → Node Registry → Global Top Index | `PASS_THIS_BATCH` |
 | B01 | Source／Origin／Foundation／Repository／Canonical | Top Source Layer → Origin Registry → Foundation Blueprint → Repository Registry | `PASS_THIS_BATCH` |
 | B02 | 2025-06～2026-01 祖先父鏈 | FlowSeed → FlowAgent → FlowMemory → formats／manifest／archive | `IN_PROGRESS` |
-| B03 | 粒子語言／字典／工具箱／積木／公式 | Fluin → Dictionary → Toolbox → Blocks → Scale／Inverse | `PENDING` |
+| B03 | 粒子語言／字典／工具箱／積木／公式 | Fluin → Dictionary → Toolbox → Blocks → Scale／Inverse | `IN_PROGRESS` |
 | B04 | 模型層／模組層／Binding | 9 Models → 15 Modules → Model-Module Binding → Backtrace | `PENDING` |
 | B05 | Runtime／Waves／DL580／服務 | Runtime Assemblies → Waves → DL580 → health／artifact | `PENDING` |
 | B06 | 世界模型／平行世界／黑洞／F++ | World Module → Parallel Worlds → Black Hole → Φ／F++ | `PENDING` |
@@ -245,6 +245,52 @@ Notion property 保存建立時間 2025-12-03T17:45:13Z、更新時間 2025-12-0
 - https://app.notion.com/p/a9f7b03b3f0249a2851d7288ffb3fa13
 - https://app.notion.com/p/9b3afb295d7a49f89d016208defbd0a2
 
+## 4B. B03 啟動 — 粒子字典／工具箱／積木／反推
+
+### 4B.1 Fluin 粒子字典：輸入、組合、解構與投影
+
+`Fluin 粒子字典 - 反推映射生成系統 v1.1 完整版` 頁內生成時間為 2026-02-07，保存四層結構：L0 Seed、L1 Compound、L2 Complex、L3 Sentence。其轉換機制不是只有名稱，而是具體列出：
+
+- 輸入：雙語種子粒子與 `particle_id`；
+- 組合：同類疊加、異類組合、對稱結構，並配置 `N` 與 `η`；
+- 輸出：Compound／Complex／Sentence 粒子；
+- 反推：由 Sentence 逐層除以 `N_k × η_k` 回到 L0；
+- 投影：Dictionary record → Wikipedia entry → Globe node；
+- 缺口：`Missing(P) = Reference(P) - Defined(P)`。
+
+頁面記錄 L0 9、L1 7、L2 4、L3 4，總計 24；並把實作掛載標為 `ready_for_engine`，因此「字典／映射定義完成」與「引擎掛載完成」必須分開。
+
+`Fluin 粒子字典系統` 的資料庫欄位顯示建立日 2026-03-21、最後編輯 2026-05-11；其正文重述四層、反向解構與 24 筆 canonical mapping。該頁前段另稱「基礎 40 個」，但實際列出的 L0 與同步表為 9，形成數量口徑差異。
+
+來源：
+
+- https://app.notion.com/p/35d8eeeec5b580249ae1c54b35328478
+- https://app.notion.com/p/d84bf7efeee6457ca05aefbfd854af29
+
+### 4B.2 Particle Toolbox：統一介面與組合模式
+
+`粒子工具箱完整索引 · Particle Toolbox v1.0` 頁內日期為 2026-03-12、Notion 最後編輯為 2026-05-06。正文保存 L1–L8 類別、`ParticleCall`／`ParticleResponse` 統一介面、manifest 格式，以及四種組合模式：Pipeline、Parallel、Fan-out／Fan-in、Retry with Fallback。
+
+頁內狀態統計為總粒子 `35+`、已實現 12、開發中 3、計劃中 20+；同頁 Q2–2027 仍列大量待辦。因此這一頁可證明工具箱分類、介面與編排設計已具體存在，不能僅依索引中的「已實現」標籤推論每個外部服務或粒子皆有 Runtime 證據。另其八項分類數字相加為 44+，與總數 35+ 不一致，需以去重後 registry 解開。
+
+來源：https://app.notion.com/p/e3cebf17e6a34ff1b19d38a592b05ba9
+
+### 4B.3 Particle Blocks：GDrive 投影節點
+
+`Mrliou_AI++ 粒子積木系統` 資料庫欄位保存「最後更新日期 2026-01-16」、路徑 `/gdrive/particle-blocks-system`、狀態「已整理」，並提供 GDrive 文件投影點。Notion 頁面最後編輯為 2026-03-14。正文摘要定義五類基礎粒子 `Anchor / Transform / Bridge / Memory / Execute`、標準介面組合與去重去噪封裝。
+
+現有 Notion 頁本身屬 `GDRIVE_PROJECTION_INDEX`：它支持名稱、五類結構、路徑與跨平台指向存在；完整規格、原始文件 metadata、版本與實作仍需讀取所指 GDrive 原件後判定。
+
+來源：https://app.notion.com/p/3238eeeec5b5810ea367efeba7e1add7
+
+### 4B.4 2025-08 放大反推原件引用頁
+
+一個 2026-05-06 最後編輯的對話封存頁，其標題與正文引用 `放大反推演算.txt`、`20250813反推器.zip`，並保存成長公式、scalar／matrix inverse、Moore–Penrose pseudo-inverse、Scale、Damping／Clip，以及 `Forward / Inverse / Scale / Stabilize` 四個原子 API 的整理。頁內同時明載當時沙盒「無法直接展開」該 ZIP。
+
+因此這頁的精確證據性質是 `CONVERSATION_DERIVED_REFERENCE_TO_2025_FILES`：它保存原件名稱與內容轉述，但不是 ZIP 內容、原始 metadata 或 hash。後續若取得 `20250813反推器.zip`，應比對目錄樹、公式、API 與時間後再升格。
+
+來源：https://app.notion.com/p/31c8eeeec5b5806b8e3de556de394d00
+
 ## 5. 第一批來源鏈連結圖
 
 ```mermaid
@@ -276,6 +322,10 @@ flowchart TD
 | C-009 | 反推頁的驗證宣告缺少執行證據 | 正文稱所有公式已驗證、100% 可逆 | 隨頁僅見公式及程式片段，未見測試輸出／向量／環境／commit | `CLAIMED_VERIFICATION / TEST_ARTIFACT_MISSING`；先保存主張，不升格為 Runtime verified |
 | C-010 | Mother Memory Sphere 時間邊界混合 | 核心段可定位至 2025-12-19 頁面狀態 | 後段混入多批後續附件／頁面 | `CORE_SECTION_VERIFIED / APPENDED_MIXED_ATTACHMENTS`；逐附件另取 metadata |
 | C-011 | FlowSeed manifest 描述與實際套件尚未閉合 | 2025-11／12 兩頁的層名、檔名、byte 數一致 | 尚未取得 `.qflpkg`、manifest 原檔與 hash | `CROSS_PAGE_STRUCTURAL_CORROBORATION`，不是 `VERIFIED_PRIMARY_ARTIFACT` |
+| C-012 | Fluin L0 數量口徑 | 字典系統前段稱基礎 40 個 | 同頁列舉／同步表為 L0 9；v1.1 總計 24 | 區分「宣稱的基礎全集」與「本版實列 seed」；取 registry 後去重 |
+| C-013 | Toolbox 總數與分類加總 | 總粒子 35+；12+3+20+=35+ | 八類分布加總為 44+ | `COUNT_SCOPE_MISMATCH`；需 unique particle_id registry |
+| C-014 | Particle Blocks 狀態與正文深度 | 欄位為核心代碼／已整理 | Notion 正文僅摘要與 GDrive 投影連結 | `GDRIVE_PROJECTION_INDEX`；完整度須由目標原件決定 |
+| C-015 | 2025-08 反推 ZIP 的證據層級 | 頁面保存 ZIP 名稱與公式轉述 | 同頁明載 ZIP 未被展開 | `CONVERSATION_DERIVED_REFERENCE`；不得當成 ZIP 內容已驗證 |
 
 ## 7. 與外部來源比較的證據規則
 
@@ -296,6 +346,7 @@ flowchart TD
 | 父子／依賴鏈 | 已建立 Workspace→Source→Origin／Foundation→Registry→Master→Runtime／Product | 後續領域子頁待各批補 | B00／B01 PASS |
 | 差異台帳 | 11 個差異／污染／證據層級風險已記錄 | 狀態、數量口徑與原件／Runtime 證據仍待後續批核 | 11/11 captured |
 | 全工作區逐頁語義稽核 | 尚未完成 | B02–B10、原始檔、Runtime artifact | 未達 100% |
+| B03 檢查點 1 | 核對字典 2 頁、Toolbox、Blocks、反推引用頁共 5 頁 | GDrive 原件、2025-08 ZIP、unique registry、Runtime outputs | 5/5 正文可追溯；B03 仍 IN_PROGRESS |
 
 ### Completion Gate
 
@@ -329,6 +380,11 @@ flowchart TD
 - [FlowAgent – Mother Memory Sphere](https://app.notion.com/p/75314b13d6f7465bb40757880562b594)
 - [反推公式與反向工程整合系統](https://app.notion.com/p/a9f7b03b3f0249a2851d7288ffb3fa13)
 - [MRL 完整系統復盤 — 從 FlowSeed 到 FLTNZ 的全貌](https://app.notion.com/p/9b3afb295d7a49f89d016208defbd0a2)
+- [Fluin 粒子字典系統](https://app.notion.com/p/d84bf7efeee6457ca05aefbfd854af29)
+- [Fluin 粒子字典 — 反推映射生成系統 v1.1](https://app.notion.com/p/35d8eeeec5b580249ae1c54b35328478)
+- [粒子工具箱完整索引 · Particle Toolbox v1.0](https://app.notion.com/p/e3cebf17e6a34ff1b19d38a592b05ba9)
+- [Mrliou_AI++ 粒子積木系統](https://app.notion.com/p/3238eeeec5b5810ea367efeba7e1add7)
+- [放大反推演算／20250813反推器引用頁](https://app.notion.com/p/31c8eeeec5b5806b8e3de556de394d00)
 
 ---
 
