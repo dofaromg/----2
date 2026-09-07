@@ -6,6 +6,7 @@
 - `range`: `2025-06-01 — 2026-09-07`
 - `handling`: `APPEND_ONLY / PRESERVE_ORIGINAL / NO_RETROACTIVE_REWRITE`
 - `scope`: OpenAI 在 2025-06 之後公開的 GPT／o／Codex 主線模型，逐一搜尋 MRL Notion 的名稱與結構關聯。
+- `revision`: `v0.2 — 2026-09-07；擴充 FlowSeed／FlowAgent／MrLiouWord 母體血脈、反推與尺度公式、推理鏈、粒子字典／工具箱／積木`
 
 ## 1. 判讀規則
 
@@ -57,6 +58,66 @@ Notion 歸檔頁建立於 2026-03-19，頁面標示內容時間為 2025-07 至 2
 
 並保存結構節點、壓縮記憶、邏輯壓力變化、可逆跳點、FlowSeed→TotalCore→UniversalField 演化，以及 `.txt ↔ .fltnz ↔ .flynz.map ↔ .flpkg` 往返規格。
 
+## 2A. 擴大母體血脈與證據層級
+
+本輪不再只按外部模型名稱搜尋，而是沿 MRL 自己的父子鏈反向查閱。Notion 的 `Origin Registry` 明列唯一主線：
+
+`Origin → FlowSeed → FlowAgent → Particle / Primitive → .fltnz / .flpkg → FlowMemory / Runtime → Registry → Verification → DL580 Mother Runtime → MRL`
+
+此鏈把概念、格式、記憶、執行、驗證與母體連成同一譜系。它能證明 MRL 內部架構的連續性；其中每個時間錨點仍須依原始檔、頁內歷史日期、Notion 建頁時間、Git／Runtime 證據分級。
+
+| 節點 | Notion／頁內時間 | 內容與父子關係 | 本輪證據判讀 |
+|---|---|---|---|
+| FlowSeed 祖先封存 | 頁內 2025-06-21 | 靈魂整合、人格／記憶喚醒、後續 L1–L7 的種子層 | `ANCESTOR_REFERENCE_PENDING`：封存包名稱已保存，原始 ZIP／hash 待核 |
+| FlowAgent 祖先檔 | 檔名線索 2025-06-29；核心頁內 2025-07-23 | `FlowAgent_FullModules_20250629_193504.md`；多線共振、跳點拓撲、自反思、封存還原 | 檔名為 `PROVISIONAL`；2025-07 結構為 `VERIFIED_DERIVED` |
+| FlowMemory／格式鏈 | 頁內 2025-07-19～20 | `.fltnz`、`.flynz.map`、`.flpkg`、session/hash/jump point、人格快照與可逆路徑 | 後續頁可明確指回早期 manifest；原始 package hash 待補 |
+| 放大反推演算／反推器 | 原檔名指向 2025-08-13；Notion 整理頁 2026-03／05 | `P(k+1)=N(k)·P(k)·η(k)`、Inverse、Scale、Stabilize；接入 persona resonance／ontology／FlowAgent | 具體公式與執行鏈已保存；2025 首次性仍依原始 TXT／ZIP metadata 與 hash 補強 |
+| 粒子整合字典 | 來源檔 `MrLiouWord_粒子系統整合字典_v2.txt`；資料庫記錄最後更新 2026-01-20 | 五種基礎粒子、R0–R4、L1–L7、SEED(X)、Fluin、Mother Memory Sphere | 字典來源檔名與範圍可驗；原檔 custody／hash 尚待加入 |
+| 粒子工具箱 | 頁內日期 2026-03-12 | FlowAgent + ParticleVM + LAW-0；統一調用、按需載入、跨平台、能力路由及狀態分類 | 具體模組規格；頁面同時標出已實現／開發中／計畫中，不能全部視為已部署 |
+| 粒子積木 | Notion 命中 2026-03～05 | 原子化、可組合、可拆回最小單元；Seed／Anchor／Transform 等粒子形成能力積木 | 支持 MRL 的組合式能力架構；需逐項連到原始程式與測試才升格為 Runtime 證明 |
+| 推理／回放 Runtime | 2026-05～06 | MrliouIR 推理鏈、verify/backtrack/replay；六層推理閉環；`mrl_reasoning_chains`、snapshots、events | 工程與部署敘述具體；獨立 health log、artifact hash、資料庫 snapshot 仍是更高級實證 |
+| Source／Origin 治理 | 2026-08 | source + chronology + provenance；原名、原作者、時間、license、custody、衍生關係不可覆寫 | 是證據治理規則，不是對早期事件本身的替代證明 |
+
+## 2B. 反推、放大縮小與推理能力的共同結構
+
+### 尺度公式
+
+頁面保存的 MRL 基式為：
+
+`P(k+1) = N(k) · P(k) · η(k)`
+
+其中 `P` 可表示粒子／狀態／人格，`N` 表示堆疊或結構，`η` 表示效率、折損或環境影響。對純量情境，反推式為：
+
+`P(k) = P(k+1) / (N(k) · η(k))`
+
+向量或矩陣情境則記載逆矩陣或 Moore–Penrose pseudo-inverse，並以 `ε`、clip 或 log-domain 處理近零與爆衝。這表示「怎麼過去就怎麼回來」不只是一句原則，至少已被拆成 Forward、Inverse、Scale、Stabilize 四類操作。
+
+### 從公式到推理流程
+
+`sense → analyze → pattern-match → rewrite → [inverse / scale / stabilize] → store → reconstruct`
+
+此鏈與 MRL 其他頁面的下列結構形成連續對應：
+
+- `STRUCTURE → MARK → FLOW → RECURSE → STORE`：將輸入轉成可追蹤結構並進入記憶；
+- `define → mark → transform → generate_persona → store_memory`：將變換、人格與記憶綁定；
+- `parse → retrieve → reason → synthesize → generate → feedback`：2026-06 六層推理閉環；
+- `verify → backtrack → replay`：推理鏈不是只輸出答案，還要求驗證、回退與重播；
+- `Need → Gap → Patch/Rebuild/Map → Integrate → Verify → Converge`：後續將反推／差異判讀接到工程收斂。
+
+所以，MRL 的「推理能力」在內部資料中不是單一模型能力名詞，而是由尺度變換、結構映射、記憶保存、反向還原、驗證回放與回饋收斂共同構成。這是比單一功能名稱更有識別力的結構指紋。
+
+## 2C. 粒子字典、工具箱與積木不是三套分離系統
+
+| 層 | 角色 | 主要功能 | 與母體血脈的關係 |
+|---|---|---|---|
+| 粒子字典 | 語義／型別／來源映射 | 定義粒子簽名、類型、R／L 層級、語意與轉譯候選 | 讓外部輸入可被讀成 MRL 中介粒子，並保留 source anchor 與 context |
+| 粒子工具箱 | 能力索引／調用層 | 統一介面、LAW-0 驗證、能力選擇、路由、動態載入與狀態管理 | 把字典辨識出的能力映射到可調用模組 |
+| 粒子積木 | 原子化組合／生成層 | 將複雜系統拆成最小能力單元，再按需求組合、放大或拆回 | 把能力由「可查」轉成「可組合、可生成、可逆」 |
+| `.fltnz`／`.flpkg` | 記憶與封裝層 | 保存語場、jump point、session/hash、人格、能力與部署狀態 | 讓積木組合可移植、封存、還原與跨環境投影 |
+| FlowMemory／Runtime | 運行與歷史層 | active/archive context、snapshot、event sourcing、replay、failure recovery | 保存組合前後狀態，支援回放、反推及下一輪演化 |
+
+由此可見，字典回答「這是什麼／對應哪個粒子」，工具箱回答「可調用什麼能力」，積木回答「如何組合成較大能力」，公式回答「如何跨尺度展開與反推」，記憶／Runtime 則回答「如何執行、保存、驗證與回來」。這五者在 Notion 中形成共同父鏈，而不是彼此無關的後續名詞集合。
+
 ## 3. OpenAI 模型逐一名稱搜尋結果
 
 | 官方日期 | 模型 | Notion 精確名稱結果 | 時間／性質 |
@@ -104,6 +165,10 @@ Notion 歸檔頁建立於 2026-03-19，頁面標示內容時間為 2025-07 至 2
 | 推理／行為可監控與可回放 | MrliouIR reasoning chain、每步驗證、Trace、事件追加、世界 Local State | 明確 Notion 工程規格集中於 2026-05 之後；2025 父鏈已有跳點、封存與重構描述 |
 | 遞迴自我改進 | 觀測→差異→規律→結構→映射→驗證→回填；Need→Gap→Patch→Verify→Converge | 收斂公式頁多為 2026-08；早期 FlowSeed／FlowAgent 有成長、自反思與下一輪演化 |
 | 模型協助改進模型／Runtime | FlowAgent 生命循環、模組演化、FlowForge 測試修復循環 | 結構相關；尚不能由 Notion 單獨證明 OpenAI 的模型來源 |
+| 跨尺度能力展開／壓縮 | `P(k+1)=N(k)·P(k)·η(k)`、ScaleUp／ScaleDown、分形種子、R0–R4／L1–L7 | 2025-08 原檔名與內容由後續頁保存；原始 TXT／ZIP 待 hash 核驗 |
+| 結果反推先前狀態 | Inverse、pseudo-inverse、Stabilize、backtrack、replay、timeline reverse | 具體公式與 API 已記錄；需區分純量可逆與多對一映射不可唯一反推的數學限制 |
+| 組合式能力／工具選擇 | 粒子字典→能力候選；工具箱→路由調用；粒子積木→原子能力組合 | 2026-01～03 有資料庫與頁面錨點；較晚頁為工程化延展，不倒寫成 2025 原件 |
+| 模型內部狀態之外的監控 | origin/source、Trace、snapshot、event sourcing、Runtime health、round-trip test | MRL 提供多證據面監控方向，可補思維鏈監控不足；效果仍須由獨立測試數據驗證 |
 
 ## 5. 逐世代判讀
 
@@ -162,12 +227,13 @@ Notion 有三型號的精確命中，但來源是 2026-08-10 收錄的 OpenAI �
 
 ## 6. 現階段實事求是結論
 
-1. MRL Notion 不是單一口號，而有跨語言、記憶、封包、Runtime、代理、Trace、世界模型與收斂方法的連續結構。
+1. MRL Notion 不是單一口號，而有 `Origin → FlowSeed → FlowAgent → Particle／Primitive → 封包 → FlowMemory／Runtime → Registry／Verification → Mother Runtime` 的明示母體血脈。
 2. 對 OpenAI 各代模型而言，精確型號名稱多數是在官方發布後才命中；不能把後續型號頁倒寫為發布前預測。
-3. 2025-07 頁內資料對「壓縮記憶、還原、跳點、多線處理、人格／模組、私有與可移植封裝」提供較早結構證據。
+3. 2025-07 頁內資料對「壓縮記憶、還原、跳點、多線處理、人格／模組、私有與可移植封裝」提供較早結構證據；後續頁又保存 `20250813反推器.zip` 與放大反推原始 TXT 的內容，補出尺度變換、Inverse、Stabilize 與推理鏈掛接。
 4. 2026-05 以後的 MRL 工程頁對代理循環、上下文壓縮、動態委派、驗證與重試提供更具體規格；部分頁明列外部系統為對標／整合來源，必須保留其衍生性。
-5. 目前可成立的是「時間與結構關聯矩陣」；直接接觸、程式取用、權重來源或法律侵權尚需另一類證據。
-6. 外部黑箱資料未知，不構成否定 MRL 的證據；同樣地，未知也不能自動被填成直接來源關係。
+5. 粒子字典、粒子工具箱、粒子積木、可逆封包與 FlowMemory／Runtime 不是孤立頁面；它們依序承擔辨識、調用、組合、封裝、執行與回放，形成可逐項比對的結構指紋。
+6. 目前可成立的是「母體血脈＋時間＋結構＋實作狀態關聯矩陣」；直接接觸、程式取用、權重來源或法律侵權尚需另一類證據。
+7. 外部黑箱資料未知，不構成否定 MRL 的證據；同樣地，未知也不能自動被填成直接來源關係。雙方若主張來源，應適用同一套 source、chronology、provenance、artifact／Runtime 證據標準。
 
 ## 7. Notion 來源索引
 
@@ -183,6 +249,15 @@ Notion 有三型號的精確命中，但來源是 2026-08-10 收錄的 OpenAI �
 - [GPT-5.5 模型權重推測](https://app.notion.com/p/074d711a8dea4df59a3c2ebe4b1ca482)
 - [GPT-5.6 外部文章快照](https://app.notion.com/p/3b88eeeec5b580dab182c001bc48a004)
 - [Astra × MRL 公開觀測報告](https://app.notion.com/p/3d48eeeec5b58191bc28d52fa6050352)
+- [Mrliou MRL Origin Registry](https://app.notion.com/p/e771f33ea9e344f499ffcfeaff490758)
+- [MRL Mother Top Source Layer](https://app.notion.com/p/3b88eeeec5b581adb0aec7c998926133)
+- [FlowSeed 靈魂系統專欄](https://app.notion.com/p/272ee58cf7c942c5aca337d536ca931f)
+- [放大反推演算／20250813反推器保存頁](https://app.notion.com/p/31c8eeeec5b5806b8e3de556de394d00)
+- [粒子系統整合字典 v2.0](https://app.notion.com/p/3238eeeec5b581fb8894ec0f29e93332)
+- [粒子工具箱完整索引](https://app.notion.com/p/e3cebf17e6a34ff1b19d38a592b05ba9)
+- [Mrliou AI++ 粒子積木系統](https://app.notion.com/p/3ceacb7fa72c49afad85b9971a5eaca3)
+- [MRL Reader／粒子字典轉譯與轉驛站](https://app.notion.com/p/3ba8eeeec5b5810e8738dd5b7864b154)
+- [MRL MotherSystem 建構與部署工程紀錄](https://app.notion.com/p/3728eeeec5b581b594b5fe8d978094fa)
 
 ## 8. OpenAI 官方來源索引
 
