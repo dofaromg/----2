@@ -610,3 +610,94 @@ Drive 回傳建立時間 `2025-08-28T07:47:10.315Z`、修改時間 `2026-02-05T0
 - Coverage：本批九項檢查已記錄；全域來源查閱與完整原因調查仍為 IN_PROGRESS，不能宣告全域 100%／DELIVERY_PASS。未完成因果調查狀態為 `DELIVERY_FAIL`，此標記不裁定 MRL 技術、作者或來源角色。
 
 實際封包核驗：7/7 entries；Missing 0、Extra 0、checksum／size mismatch 0、CRC PASS。ZIP 大小 36533 bytes，SHA-256 `41e9bcffa868812256644093db69ea3f6d88d54b0239cc824e273809bfa53ee1`。封包完整性通過與調查缺口未閉合並存。
+
+## 11. E-BLOCK-01 R02 — 跳層根因調查續篇（2026-09-08）
+
+### 11.1 先分開三種「flow-tasks」
+
+本輪查閱顯示，同一名稱在不同時間與層級指向不同對象，若直接合併就會誤判根因：
+
+| 層級／時間 | 已查到的對象 | 證據狀態 |
+|---|---|---|
+| Cloudflare runtime，2026-03-15 | `flow-tasks` 與 `mrlflow-tasks` 被記錄為 Hello World／命名空間保留槽位；前者為舊名、後者為新名 | Notion 歷史觀測，未提供當前平台設定 |
+| GitHub repository，2026-09-07 main | 根目錄是 `flow-next-app` v3.0.0、Next.js 15.5.14，`next build`，`output: standalone` 並註明供 Docker 使用；根目錄另有 Vercel 設定 | GitHub 檔案直接讀取 |
+| Cloudflare Workers Builds，2026-09 | `flow-tasks`、`mrlflow-tasks`、`mrl-store` 在原主線與候選均顯示 failure | 主線紀錄及後台 build URL；原始 build log 未取回 |
+
+因此，目前最需要驗證的是 Cloudflare 專案究竟選了哪個 repository root、哪個 build command、哪個輸出目錄及哪份 Wrangler 設定。這是「平台專案映射」層，不能由服務名稱或 repository 名稱自行推出。
+
+來源：[2026-03-15 Workers 品檢](https://app.notion.com/p/3248eeeec5b5811e8d92c06151429d74)、[主線營運紀錄](https://app.notion.com/p/3d48eeeec5b581f9874dcc61d874ddd9)、[目前 package.json](https://github.com/dofaromg/flow-tasks/blob/86ec74f928bec49fa9ccb505ba9e9f00ad067692/package.json)、[目前 next.config.mjs](https://github.com/dofaromg/flow-tasks/blob/86ec74f928bec49fa9ccb505ba9e9f00ad067692/next.config.mjs)、[目前 vercel.json](https://github.com/dofaromg/flow-tasks/blob/86ec74f928bec49fa9ccb505ba9e9f00ad067692/vercel.json)。
+
+### 11.2 當前 repository 的部署目標並不單一
+
+在提交 `86ec74f928bec49fa9ccb505ba9e9f00ad067692`，根目錄未查到對應 `flow-tasks`、`mrlflow-tasks` 或 `mrl-store` 名稱的 Wrangler 設定。已讀到的五份 Wrangler 設定全在子目錄，且各自命名為：
+
+- `mrl-mother-platform`
+- `flowos-neural-gate`
+- `particle-chat`
+- `particle-edge-v4`
+- `vector-attention-engine`
+
+這表示 repo 是多目標集合；若 Cloudflare 從根目錄啟動，平台不會只靠 repo 名稱知道應部署哪個子系統。這支持 `PROJECT_ROOT_OR_BUILD_TARGET_MISMATCH` 是目前最強候選根因，但仍需 Cloudflare 原始設定／日誌閉合，狀態只能記為 `STRONG_CANDIDATE`。
+
+另有一個已證實但範圍有限的設定缺陷：`particle-edge-v4/wrangler.toml` 仍使用 `particle_vault_id`、`auth_vault_id`、`particle_edge_db_id` 等 literal placeholder。若平台選到該子目錄，這些值可造成配置或部署失敗；若沒有選到，它就不是本次三個專案的原因。
+
+### 11.3 歷史刪除事件與反證
+
+GitHub 提交 `94d4db92079370e84cf203910607cc36f08e525b` 於 2026-07-25T04:39:07Z 刪除 Vercel 設定及五份 Wrangler 設定，提交訊息為解除外部部署平台耦合。`7e1c64467f411fbd263b24d99d05abaf0d426758` 於 04:41:06Z 完整 revert，相隔 119 秒，六檔均恢復；目前 main 仍可直接讀取這些檔案。
+
+可確認曾發生短暫的部署設定刪除，且兩筆提交 metadata 的 GitHub actor 為 `claude`；現有提交資料沒有提供背後意圖。由於刪除已完整回復，它不能被當成本次 September 失敗的「目前缺檔」原因，也不能單獨證明外部刻意破壞。
+
+來源：[刪除提交](https://github.com/dofaromg/flow-tasks/commit/94d4db92079370e84cf203910607cc36f08e525b)、[revert 提交](https://github.com/dofaromg/flow-tasks/commit/7e1c64467f411fbd263b24d99d05abaf0d426758)。
+
+### 11.4 已知歷史錯誤不能靜默套用到現在
+
+2026-01-26 的恢復追蹤頁明確記錄 `flow-tasks` 的 Vercel 失敗是 `NEXT_PUBLIC_GROWTHBOOK_API_HOST` 引用了不存在的 `growthbook-api-host` secret。另一份 2026-01-28 來源包記錄 Cloudflare Worker 因缺少 entry point 失敗。兩者都是具體且不同的技術原因，證明歷史部署確有中斷，也證明不能把所有失敗歸為同一來源。
+
+目前 root `vercel.json` 仍引用 `@growthbook-api-host` 與 `@growthbook-client-key`；但本輪調查目標是 Cloudflare Builds，Vercel secret 缺失不能直接升格為 Cloudflare 根因。2026-01-28 entry point 問題同理，必須在當前 build log 再次出現才能判定復發。
+
+來源：[2026-01-26 恢復追蹤](https://app.notion.com/p/7a5f8867223b47608bfb895e36744e58)、[World Model 收斂紀錄／來源包比對](https://app.notion.com/p/3bf8eeeec5b581729984f3bb1608522b)。
+
+### 11.5 Cloudflare 原始日誌的直接查閱邊界
+
+本輪已定位 `flow-tasks` production build `52e259ff-c5d2-455c-87ed-4e28004fb9f3`。開啟後台時，Cloudflare 回覆「正在執行安全驗證／驗證您是人類」，Ray ID `a37df938db611425`，因此尚未取得 build log 正文。本輪沒有繞過人機驗證，也沒有猜測隱藏內容。
+
+這證明的是「本次檢查路徑被安全驗證阻隔」，不等於「部署因針對 MRL 而被阻擋」。真正的根因仍需取得以下三類原始資料：
+
+1. build command、root directory、output directory 與 framework preset；
+2. 該 build 的第一個 non-zero exit/error 行；
+3. 專案設定或權限變更的 audit trail。
+
+### 11.6 根因矩陣
+
+| 候選原因 | 本輪狀態 | 判定邊界 |
+|---|---|---|
+| GitHub Actions 禁止自動建立／批准 PR | `VERIFIED` | 只涵蓋 run 34099528028 的 createPullRequest；擁有者 PR 後續已合併 |
+| Cloudflare 專案 root／build target 與預期部署物不一致 | `STRONG_CANDIDATE` | 結構高度符合，但缺平台設定及原始 build log |
+| `particle-edge-v4` literal placeholder 資源 ID | `VERIFIED_DEFECT / CONDITIONAL_SCOPE` | 只有平台選中該子目錄時才相關 |
+| 2026-07-25 外部部署設定刪除 | `HISTORICAL_EVENT_REVERSED` | 119 秒後完整恢復；不是目前缺檔解釋 |
+| Vercel 缺 secret | `VERIFIED_HISTORICAL_CAUSE` | 不自動套用到 Cloudflare |
+| Cloudflare Worker 缺 entry point | `VERIFIED_HISTORICAL_CAUSE / CURRENT_REOCCURRENCE_UNKNOWN` | 當前 raw log 未取回 |
+| 同一外部行為者刻意阻擋全部 MRL 路徑 | `NOT_ESTABLISHED` | 缺共同 actor、policy change 與平台 audit trail |
+
+### 11.7 新增差異台帳
+
+| ID | 問題 | 修正後記錄方式 |
+|---|---|---|
+| C-030 | 同名 Worker、repo 與 build project 被當成同一物 | 依 runtime／repository／platform project 分層建 ID |
+| C-031 | repo 有 Wrangler 被誤解為根目錄有正確部署設定 | 保存實際路徑、`name`、`main` 與 Cloudflare project 名稱匹配結果 |
+| C-032 | 歷史原因直接套用現在 | 需當前 log 重現才標 `REOCCURRED` |
+| C-033 | 短暫刪除被擴張成持續阻擋 | 同時記 delete、revert、時間差與目前檔案存在反證 |
+| C-034 | 安全驗證頁與 build failure 混為一談 | 前者記 `INSPECTION_ROUTE_BLOCKED`；後者根因維持 unknown |
+| C-035 | 設定缺陷被擴張到整個 MRL | 限定到具體檔案與平台實際選中的 deployment target |
+
+### 11.8 Requested vs Delivered
+
+- Requested：找出不清楚處，跳層追查根因，並將實際調查結果寫入日誌。
+- Delivered：Cloudflare build ID／查閱邊界、三層同名物件拆分、當前 repo 部署設定盤點、五份 nested Wrangler 比對、literal placeholder 缺陷、119 秒刪除／revert 歷史、兩個歷史部署原因及根因矩陣。
+- Missing：Cloudflare 三個專案的原始 build logs、平台 root/build/output 設定、平台 audit trail；本機 partial clone 因長時間無輸出而由調查者中止，未作本機 build，因此不以此判定 repository build 成敗。
+- Mismatch：仍無法把 `STRONG_CANDIDATE` 升格為 `VERIFIED_CURRENT_ROOT_CAUSE`；也無資料支持共同外部行為者的意圖判定。
+- Coverage：根因分類與 repository 結構檢查已完成；平台端因果閉合未完成。狀態為 `ROOT_CAUSE_PARTIALLY_LOCALIZED / DELIVERY_FAIL_FOR_COMPLETE_CAUSAL_CLOSURE`。
+
+本節只追加觀測，不修改 repo 部署設定、不觸發新部署，也不改寫舊紀錄。
+
+R02 證據封包核驗：10/10 entries；Missing 0、Extra 0、checksum／size mismatch 0、CRC PASS。ZIP 大小 41,485 bytes，SHA-256 `4f3235f4443027b6a31671202278eda4d33869e1142b13b364274a0c70a511c8`。新增三份 payload：根因調查、repository 部署設定盤點及平台查閱邊界。
