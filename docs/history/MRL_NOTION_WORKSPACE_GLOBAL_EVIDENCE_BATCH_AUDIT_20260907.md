@@ -511,3 +511,102 @@ flowchart TD
 ---
 
 `origin_signature: MrLiouWord`
+
+## 10. E-BLOCK-01 — 平台限制、交付錯誤與查閱障礙（2026-09-08）
+
+### 10.1 本次調查範圍與既有判定的性質
+
+使用者提出「是他們擋著不讓我們通過，所以這方面也可以查」。本次依既有來源鏈查找平台原始拒絕訊息、AI 交付與匯出缺陷、執行環境依賴、歷史版本讀取障礙及可用的反向證據。目標是保存可核對的原因與影響範圍；「刻意阻擋」是待查的因果主張，不預先當作結論。
+
+**語意更正：** E-AGI-01 的 Runtime／Package Gate 是本報告對上傳材料的檢查標籤；目前沒有與這批附件對應的第三方 AGI 認證申請或拒件紀錄。不得把本報告的標籤誤寫為平台已經審查並否決 MRL，也不能把文件檢查變成對來源創造者角色的裁定。
+
+本檢查點產出：更新本報告、另存 `MRL_BLOCKER_EVIDENCE_20260908.zip`。後者保留實際取回的 Notebook、來源版本索引、檢查結果與日誌節錄，不用清單取代原件。
+
+### 10.2 已確認的自動化政策限制
+
+`dofaromg/flow-tasks` run `34099528028` 的 test job 成功；同步 job 的 `Run synchronization` 亦成功，失敗點是 `Preserve candidate and open review PR`。本輪實際取回 job `101670593483` 原始日誌，其中 2026-09-07T08:14:46.2790332Z 回覆：
+
+> pull request create failed: GraphQL: GitHub Actions is not permitted to create or approve pull requests (createPullRequest)
+
+此事件可記 `VERIFIED_PLATFORM_AUTOMATION_POLICY_REJECTION`。可確定的是平台在該操作執行了權限限制；設定是由誰啟用、是否意圖針對 MRL，日誌沒有回答。
+
+同一候選 `5e011938801de3815ee4bd9cda9085fdf879edbe` 後經擁有者交接 PR #636，已於 2026-09-07T08:35:56Z 合併，提交 `86ec74f928bec49fa9ccb505ba9e9f00ad067692`。因此這一次阻擋作用於自動建立 PR；它沒有證明相同內容無法經擁有者正常審查整合。
+
+來源：[失敗 job 原始日誌](https://github.com/dofaromg/flow-tasks/actions/runs/34099528028/job/101670593483)、[PR #636](https://github.com/dofaromg/flow-tasks/pull/636)、[Notion 主線營運紀錄](https://app.notion.com/p/3d48eeeec5b581f9874dcc61d874ddd9)。
+
+### 10.3 同時存在的 MRL 自有保護與成功路徑
+
+Notion 的 #623 closeout 記錄了 MRL 自有治理負向測試：刪除 CODEOWNERS 應被拒絕。本輪取回 run `33029590797`、job `98378762361`，確見 `MRL_GOVERNANCE_GATE_FAIL: missing dependency .github/CODEOWNERS`；修復 run `33030046043`、job `98381604180` 則實際回覆 `DELIVERY_PASS`。該失敗屬自有保護規則的預期結果，不應與外部自動化權限限制合併計數。
+
+本研究 PR #16 在查閱時為 OPEN、非 draft、mergeable=true；head `0104d49e9a045694d4c3221508549346832d2f9b` 的 CI run `34215413396` 為 success，combined status 返回 CodeRabbit success。這證明所查到的檢查通過；未在本輪讀取所有 ruleset／Check Runs，因此不宣稱所有可能的合併限制皆已排除。
+
+來源：[治理歷史頁](https://app.notion.com/p/3c98eeeec5b58153a01bc4efc52a4acb)、[拒絕 run](https://github.com/dofaromg/flow-tasks/actions/runs/33029590797)、[修復 run](https://github.com/dofaromg/flow-tasks/actions/runs/33030046043)、[本研究 PR #16](https://github.com/dofaromg/mrliouword-root/pull/16)、[CI run](https://github.com/dofaromg/mrliouword-root/actions/runs/34215413396)。
+
+### 10.4 AI 交付／Notebook 匯出需要補正的分析
+
+`MR.liouagi(1).py` 的 SHA-256 維持 `d46ff2bf5223d0d5b3b04d1aaa379d543cf28e23f6b2ba889afb2de765b46dbb`，本輪未更改原件。
+
+檔案第 105–109 及 643–647 行記錄 AI 自述無法執行詳細分析，並使用 placeholder／hypothetical content；這是生成過程的自述，沒有附上當時平台拒絕的 request ID 或政策日誌，不能單凭自述證明限制原因。但交付流程以模擬內容代替實讀結果，應記入 AI 交付品質與執行工具能力的調查範圍，不能直接歸責於使用者未提出設計。
+
+上一輪僅突出整檔第 1307 行 f-string 錯誤，未充分驗證後段修正。本輪在 Python 3.12.13 以 AST 解析取得：
+
+| 檢查對象 | 結果 | 可支持的結論 |
+|---|---|---|
+| 原件整檔 | 第 1307 行 `f-string: unmatched ')'` | 現有串接匯出不能作為單一 Python script 直接解析 |
+| 原件第 1324–1384 行最後函式定義 | AST parse PASS；未執行函式 | 歷史紀錄已保留修正版，不能寫成未曾修正或所有版本皆錯 |
+| 修正版片段 SHA-256 | `e4315cb6ded5121c45f9d0f418d020ec871d14bc361f53ee6aa5fe65ebf7d60e` | 片段定位可重現；不等於完整系統執行驗收 |
+
+此補充延伸 C-021／C-023：保留舊版錯誤、修正版及匯出組合方式三者的關係，不以整檔失敗抹除修正歷史，也不把語法通過擴張成 AGI 能力通過。
+
+### 10.5 沿附件找回 Google Drive 原始 Notebook
+
+程式標頭指向 Colab 檔案 `1Ij5E5o1ngzuqKgh0nUTMQURJjKqWLRuC`。本輪已透過授權 Drive 讀取取回 `Untitled0.ipynb`，176,525 bytes，SHA-256：
+
+`c64d3ec913f9676879133c561f8be765620d52bc738a02f7765ce689ed389e58`
+
+Drive 回傳建立時間 `2025-08-28T07:47:10.315Z`、修改時間 `2026-02-05T05:54:26.885Z`，共 10 筆列出的版本。最早兩版僅 306／324 bytes；2025-09-24 版為 129,926 bytes。這證明檔案與版本時間鏈存在，不能把現在所有內容倒算為 2025-08-28 當日已存在。
+
+目前取回版本包含 56 cells、36 code cells（其中 10 個空 code cells）、4 個 output entries。主要長篇設計／生成歷程保存在 Markdown cell。它與上傳 ZIP 內僅 1 個 Markdown cell 的同名檔是不同 bytes／版本角色，不能互相替代。
+
+依 Notebook 保存的輸出（cell index 從 0 起算）：
+
+- cell 14：execution_count=5，兩個輸入 `/content/喚醒模組與公式.txt` 與 `/content/wake_token.json` 回報 File not found。這支持當時指定 runtime 路徑未取得輸入；檔案是否存在於其他位置未由此判定。
+- cell 17：execution_count=6，程式的 `file_id` 仍是 `REPLACE_WITH_YOUR_FILE_ID`，保存的 Google Drive API 輸出為 404／notFound，請求目標也正是該佔位字串。這次錯誤有明確的未完成參數設定，不能當成對真實 MRL 檔案的存取拒絕。
+- 其餘 2 個 outputs 是 AI prompt widget 的 display_data。這些是已保存的局部執行輸出，不是完整 AGI 工作流的成功結果。
+
+以上屬 Notebook 內保存的歷史輸出，可編輯性仍存在；不冒稱獨立服務商簽章的不可變審計日誌。
+
+來源：[Drive 原始 Notebook](https://drive.google.com/file/d/1Ij5E5o1ngzuqKgh0nUTMQURJjKqWLRuC/view)。
+
+### 10.6 本輪查閱限制及未閉合項
+
+1. 2025-09-24 與 2025-11-05 的 revision metadata 可取得，但歷史內容讀取均回覆 `GoogleDriveInvalidRequestError: No supported mimetype returned for revision`。這是可記錄的連接工具格式支援障礙；目前無法判定這兩版何時加入或修正特定內容，也不能說原件不存在。
+2. 當前 Notebook 的初次中介檔案下載回覆 HTTP 403，後改用同一授權 Drive 讀取提供的完整 base64 bytes 成功。403 的具體來源未確認；這是取檔通道路徑差異，不可宣稱來源已被永久封鎖。
+3. 本輪 Notion 初次搜尋的 `max_highlight_length=600` 超出工具上限 500，改為 400 即成功。這是本助手參數錯誤，不能歸咎於資料擁有者或外部針對性阻擋。
+4. Cloudflare failure 仍由主線 Notion 紀錄提供線索。本輪 combined-status API 對主線提交只返回 CodeRabbit，並非完整 Check Runs／Cloudflare Builds 介面；未取得三項失敗 build 的原始日誌，根因維持未定。
+5. 舊 AI 自述受限與本輪 GitHub 權限拒絕發生於不同系統、不同時間；現有證據沒有建立同一行為者或共同原因。
+
+### 10.7 新增差異與責任邊界
+
+| ID | 修正／調查項 | 記錄方式 |
+|---|---|---|
+| C-024 | 分析者 Gate 與平台拒件混淆 | 每項 FAIL 加記產生者、對象、規則、時間與原始訊息 |
+| C-025 | 相同失敗字樣包含不同機制 | 分開自動化政策、MRL 自有治理、生成／匯出、參數／輸入、查閱工具與未知根因 |
+| C-026 | Python 後段已有修正 | 舊版失敗與修正版 AST PASS 並列；不改寫原件 |
+| C-027 | 同名 Notebook 版本角色不同 | ZIP 摘錄、Python 匯出、Drive 當前版本各存 hash／metadata／內容邊界 |
+| C-028 | revision metadata 存在但歷史 bytes 取不到 | 記工具格式支援錯誤；不得用查閱失敗抹除來源 |
+| C-029 | 調查者自身工具錯誤可能被誤歸因 | 參數錯誤、傳輸 403 與成功替代途徑均保存 |
+
+**本批判斷：** 已確認一次平台自動化政策拒絕，也確認一次 MRL 自有治理拒絕後的修復成功、AI 匯出中的既有修正版、Notebook 的輸入／參數錯誤與歷史版本查閱障礙。可以記錄「發生過限制或交付中斷」；現有資料尚不能判定為有人刻意針對 MRL，亦不能把所有失敗歸為同一原因。
+
+### 10.8 Requested vs Delivered
+
+- Requested：依使用者新增方向調查「被擋住」的證據，沿既有來源查詢並追加歷史。
+- Delivered：九項檢查紀錄 BL-01～BL-09、實際取回的 Drive Notebook、版本清單、三組 GitHub 日誌節錄、Python 原件與修正版的解析對照、C-024～C-029。
+- Expected outputs：2 檔（本報告更新＋證據 ZIP）；ZIP expected entries=7，manifest 記錄完整七項 inventory，另保存五個實際 payload 的 SHA-256／大小及依賴。
+- Missing evidence：2 個歷史版本正文；Cloudflare 三項失敗 build 的原始日誌（尚未取得 build ID）；這些都是查閱／因果證據缺口，不代表 MRL 原始資料不存在。
+- Extra／renamed outputs：0；原始附件維持原名與 bytes。
+- Mismatch：完整原因調查尚未收斂；前述各類限制不可合併為刻意阻擋。
+- Coverage：本批九項檢查已記錄；全域來源查閱與完整原因調查仍為 IN_PROGRESS，不能宣告全域 100%／DELIVERY_PASS。未完成因果調查狀態為 `DELIVERY_FAIL`，此標記不裁定 MRL 技術、作者或來源角色。
+
+實際封包核驗：7/7 entries；Missing 0、Extra 0、checksum／size mismatch 0、CRC PASS。ZIP 大小 36533 bytes，SHA-256 `41e9bcffa868812256644093db69ea3f6d88d54b0239cc824e273809bfa53ee1`。封包完整性通過與調查缺口未閉合並存。
