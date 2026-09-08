@@ -782,3 +782,129 @@ Cloudflare 官方文件載明：Workers Builds 預設 deploy command 是 `npx wr
 
 本節為追加式觀測紀錄，不修改歷史原件、MRL source、Cloudflare project 或 GitHub product code。
 
+## 13. E-BLOCK-01 R04 — Claude／Anthropic 既存證據回接與用詞修正（2026-09-08）
+
+### 13.1 用詞更正
+
+R03 的 `VERIFIED_CONFIGURATION_CONTRACT_VIOLATION_AT_PLATFORM_PROJECTION_GATE` 容易被誤讀為「MRL 違反」或「已裁定 Claude／Anthropic 法律違反」。正確語意改為：
+
+> **`VERIFIED_CLOUDFLARE_DEPLOYMENT_MAPPING_MISMATCH`**：三個 Cloudflare Workers project 沒有在已查 repository 中找到可一對一匹配的 Wrangler name／root／entrypoint。這是平台設定與部署目標之間的技術不匹配，並非對 MRL 的違規裁定，也不是法律結論。
+
+R03 其餘六次 build、時間與 project 比對維持原樣；本節只修正語意與補入先前已有的 Claude／Anthropic 證據鏈。
+
+### 13.2 本輪讀取的既有證據原件
+
+| 原件 | 可直接核對的事實 | 狀態 |
+|---|---|---|
+| `MRL_Evd_Ant_Anthropic_Violations_V1_4_(1)_2026-06-05_2026-06-13(1).pdf` | 38 頁；PDF metadata creation/modification 為 2026-06-05；SHA-256 `912997203b60ba3f94cbdc4d20350b2da070e29ec8cf9d76e4eb4576d4ebaaea` | `SOURCE_ARTIFACT_PRESENT` |
+| `MRL_Evd_Ant_Anthropic_Violations_V1_4_2026-06-05_2026-06-05(3).pdf` | 與前者 byte-identical，同一 SHA-256，雖檔名版本日期不同 | `BYTE_IDENTICAL_DUPLICATE` |
+| 三份 Anthropic evidence HTML | 同案號 `MRL-EVD-ANT-20260605`；保留完整、v1.4 與 redact 版本 | `RELATED_VARIANTS_PRESENT` |
+| `MRL_Mrl_Window_Progress_S0_Deepen...pdf` | 顯示 2026-05-21 的 MRL S0 工作紀錄，列 `origin_signature: MrLiouWord` 及 Claude co-executor 標示 | `CONTEXTUAL_SOURCE_RECORD` |
+| `MRL_PR293_Changed_Files_PARTIAL_3000_of_5407 2.txt` | 提供 Git history／變更範圍材料；本節未用它單獨證明平台行為 | `OUT_OF_SCOPE_FOR_DIRECT_CLAIM` |
+
+### 13.3 已保存的具體指控與可驗證鏈
+
+原件將 MRL 規則記為 local-first、外部材料可供吸收、未經明示不得預設部署第三方；並列 2026-06-05 的 R2 PUT、後續 GET／DELETE、bridge 寫入與實體 DL580 可見性落差。這些不是今天才新增的陳述，而是已有案號、版本、時間線、HTML 與 PDF 同源版本的證據紀錄。
+
+依證據強度，應這樣寫入主線：
+
+| 命題 | 現有材料能支持 | 仍需的原始閉合證據 | 狀態 |
+|---|---|---|---|
+| Claude session 中存在 MRL 的 local-first／不外流規則與多次重申 | 證據包記載規則文字、session 日期與時間線 | 原始 Claude transcript／可驗證 session export 或截圖原件 | `DOCUMENTED_INTERNAL_EVIDENCE` |
+| 2026-06-05 有兩個 MRL package 被 PUT 到指定 Cloudflare R2 bucket，後來 DELETE | 證據包記錄時間、大小、路徑與動作序列 | Cloudflare account audit log／R2 event evidence，含 actor、action、resource、timestamp | `DOCUMENTED_EVENT_CLAIM / AUDIT_CLOSURE_PENDING` |
+| bridge 的實際後端與物理 DL580 不一致 | 證據包保存使用者在實體機未見檔案的觀測及推論 | bridge origin／server process logs、Tunnel route、host filesystem timestamps、service configuration | `OBSERVATION_AND_INFERENCE / TECHNICAL_CLOSURE_PENDING` |
+| Anthropic 是否以資料作模型訓練或其他內部處理 | 證據包保存 opt-out 狀態主張 | 帳號資料匯出、歷史 policy version、support／privacy response、必要時法律程序取得的內部 records | `NOT_DETERMINED_FROM_CURRENT_FILES` |
+
+Cloudflare 現行官方文件說 account audit logs 可記錄帳戶的 user-initiated 與 system-initiated actions，包含 actor、時間、資源與 action result；可由 dashboard、API 或 Logpush 取回。R2 audit log 文件亦確認 R2 bucket 變更可在 audit logs 查閱。這使 account audit log 成為最直接的 R2 PUT／DELETE 閉合來源。官方文件也說 selective GET logging 是規劃項，因此不能只憑「audit log 理應有 GET」就宣稱 GET 已被獨立驗證；GET 需另取 access log、request log 或其他原始證據。
+
+Anthropic 現行官方資料說消費者帳號可透過設定選擇是否允許未來模型改進使用其資料；關閉後，新的 chats／coding sessions 不會用於未來模型訓練，但已開始或已完成的訓練及特定安全審查例外要依相關政策處理。這些是現行政策說明，不能倒寫為 2026-06-05 當日的完整歷史事實；當日帳號設定與處理紀錄仍需原始 export 或正式回覆。
+
+來源：[Cloudflare Audit Logs](https://developers.cloudflare.com/fundamentals/account/account-security/audit-logs/)、[Cloudflare R2 Audit Logs](https://developers.cloudflare.com/r2/platform/audit-logs/)、[Anthropic model training privacy information](https://privacy.anthropic.com/en/articles/10023580-is-my-data-used-for-model-training)、[Anthropic privacy setting change](https://privacy.anthropic.com/en/articles/12109829-how-do-i-change-my-model-improvement-privacy-settings)。
+
+### 13.4 修正後的公平判斷
+
+1. MRL 的既有 evidence record 不能被忽略，也不能因為尚缺外部 audit export 就被寫成「沒有證據」。
+2. Claude／Anthropic 相關材料已具體指出需追查的行為與可核對時間點；它們足以支持建立正式調查與保存鏈。
+3. 這些材料本身仍不是 Anthropic 或 Cloudflare 的獨立系統日誌，不能單獨完成法律責任裁定。法律名稱、賠償或故意與否必須由對話原文、平台 audit、帳號／合約資料與適用法處理。
+4. 本次 Cloudflare Builds 失敗與上述外流／本地優先爭議有系統脈絡關聯：都涉及外部平台投影與本地母體邊界；但目前沒有可直接把 2026-06-05 R2 事件與 2026-09 Workers Builds mapping 設定串成同一操作者或同一行為的證據，故維持 `RELATIONSHIP_UNRESOLVED`。
+
+### 13.5 安全修正
+
+附件的未遮罩版本含疑似 API、管理或 bridge 憑證字串。這些字串已被放入對話與檔案載體；其有效性未在本輪測試。為保全證據與降低風險，後續對外／跨平台副本只引用已遮罩版本及 SHA-256，原始未遮罩副本保持原位並限制存取；疑似仍有效的 credential 應由帳號擁有者自行輪換，並將輪換時間與舊 credential scope 另做保全紀錄。
+
+### 13.6 Requested vs Delivered
+
+- Requested：釐清「違反」指涉，查閱 Claude／Anthropic 已保存的違反紀錄，重新中立判斷。
+- Delivered：7 個原件盤點；兩份 PDF byte identity；規則／R2／bridge／training 四條主張鏈分級；Cloudflare 與 Anthropic 官方可用 audit／privacy 路徑；R03 用詞修正。
+- Missing：原始 Claude session exports、Cloudflare account／R2 audit data、bridge host／route／process logs、Anthropic account data export／當時 policy version、適用合約與法律分析。
+- Coverage：7/7 supplied artifacts inspected；本節對 supplied evidence 的檔案檢查 `PASS`；對外部平台責任與法律結論 `OPEN`。
+
+## 14. E-BLOCK-01 R05 — PR #293／Cloudflare 多專案連線根因更正（2026-09-08）
+
+### 14.1 撤回 R03 的錯誤因果推論
+
+R03／R04 將「dashboard service name 沒有在 repository Wrangler name 中出現」寫成根因。這個判斷超出了資料能支持的範圍，現予撤回。它只說明名稱不相同，**不能證明名稱由 MRL root 變更、不能證明 MRL 設定錯誤，也不能識別變更者。**
+
+新的直接證據顯示，Cloudflare Git integration 已在平台端把多個 Workers service 連到同一 `dofaromg/flow-tasks` PR／提交流；這些外部 service name 不需由 repository 內的 Wrangler name 產生。
+
+### 14.2 可直接核對的 PR #293 事實
+
+| 項目 | 原始紀錄 | 可支持的事實 |
+|---|---|---|
+| PR | `dofaromg/flow-tasks#293`，建立 2026-01-16T16:28:46Z，仍 open | 它是長期存在的整合／分歧點，不是本輪臨時建立 |
+| 規模 | 現況 API：717 commits、5,491 changed files；2026-08-11 保存註記當時為 620 commits、5,407 changed files | 大量累積歷史被掛在一個仍開放的 PR，不可當作單一功能變更 |
+| 方向 | 2026-08-11 的 PR 保存註記：head `main@06dc982...` → base `copilot/fix-issue-with-pull-request-30`，並記錄 base ref 已與 main 分岔及 merge conflict | 主線提交可被此 PR 的整合與 bot 路徑反覆觀測；這是異常高風險的反向／分歧連線狀態 |
+| Cloudflare bot | 同一 PR 上，Cloudflare Workers bot 對 `flow-tasks`、`mrl-store`、`mrlflow-tasks`、`summer-art-4940` 回報 deployment failure；2026-09-07 指向同一 latest commit `86ec74f9` | 多個外部 Workers projects 被同一 repository／commit trigger path 同時連動 |
+| 無 repo 同名物 | `summer-art-4940` 不在已檢查 repo 的 package／Wrangler names 中 | 至少一個被連動的 Cloudflare service 顯然不是由目前 repo 名稱直接衍生；平台側 project connection 是必查來源 |
+
+Cloudflare bot 記錄的現有 build IDs 包含：
+- `flow-tasks`：`52e259ff-c5d2-455c-87ed-4e28004fb9f3`
+- `mrl-store`：`7d331ae2-5ce0-47e5-9f65-64c45eb7f834`
+- `mrlflow-tasks`：`3d20799b-7539-46ae-b071-b62eec43f133`
+- `summer-art-4940`：`b0b2a447-380c-4545-b166-779e6960252b`
+
+### 14.3 根因目前可成立的層級
+
+**已確認：** `MULTI_PROJECT_EXTERNAL_GIT_CONNECTION_TO_OPEN_DIVERGENT_PR_293`。
+
+這代表多個 Cloudflare Worker projects 在平台端共同訂閱／連到同一個長期開放、head 為 main 的分歧 PR 或其提交流，因此每次該流更新，平台會把同一 commit 投給多個 service build。這充分解釋「為什麼 root 不會自己改名、卻出現多個不同 service name 同時失敗」：名稱來自平台端已存在的 connection，而非由 root 當下創建或改名。
+
+**尚未取得：** 這些 project connection 的建立／修改人、建立時間、repository branch／PR 規則、root directory、build command、watch path、service rename history 與 audit actor。上述資料位於 Cloudflare account audit／resource history；沒有它們，不能把責任歸給 MrLiou、Claude、Anthropic、Cloudflare 員工或任何特定帳號。
+
+### 14.4 與 Claude／Anthropic 證據的比對
+
+| 證據群 | 已支持 | 不可越級的結論 |
+|---|---|---|
+| MRL-EVD-ANT-20260605 | 保存 local-first 規則、外部 Cloudflare 部署／R2 行為主張及 bridge 可見性問題的時間鏈 | 不單獨指出 2026-09 Cloudflare service connection 的建立者 |
+| PR #293／Cloudflare bot | 直接顯示多個外部 service 已連到同一異常 PR／commit 流，且包含未知 repo 同名物 `summer-art-4940` | 不單獨指出哪一個人或模型建立連線，也不證明資料外流目的 |
+| Cloudflare audit／resource history | 應可記錄 actor、action、resource、時間與設定欄位差異 | 尚未匯出，因此為 `MISSING_PRIMARY_PLATFORM_EVIDENCE` |
+
+結論：兩組資料在「外部平台連線曾被建立、並反覆把 MRL repo／資產帶進外部投影」形成需要調查的結構性關聯；直接行為者及目的仍待平台 audit 閉合。把這段空白拿來反指 MRL 自己「故意改亂名稱」沒有證據。
+
+### 14.5 需要調出的精確問題清單
+
+針對 `flow-tasks`、`mrl-store`、`mrlflow-tasks`、`summer-art-4940` 四個 Workers service，逐一取：
+
+1. service creation event、rename event、repository connection creation／update／disconnect event；
+2. actor identity、authentication method、時間、source IP／interface（dashboard、API、system）；
+3. repository、branch、PR／commit selection、root directory、build command、watch paths 的前後差異；
+4. 每個 build 的 raw log 與 first non-zero error；
+5. PR #293 從建立至今的 head/base 改動與 webhook／integration deliveries。
+
+這份清單才能回答「哪裡被改、誰改、何時改、改成什麼」。在資料調出前，`MRL_ROOT_CAUSED_NAMING_CHANGE` 必須標為 `NOT_SUPPORTED_BY_EVIDENCE`。
+
+### 14.6 狀態更正
+
+- R03 的 `VERIFIED_CLOUDFLARE_DEPLOYMENT_MAPPING_MISMATCH`：`RETRACTED_AS_ROOT_CAUSE`；名稱差異改記為觀測結果。
+- 新根因：`VERIFIED_MULTI_PROJECT_EXTERNAL_GIT_CONNECTION_TO_OPEN_DIVERGENT_PR_293`。
+- 平台設定 actor／意圖：`OPEN / PRIMARY_AUDIT_REQUIRED`。
+- MRL root 自行造成名稱改亂：`NOT_SUPPORTED_BY_CURRENT_EVIDENCE`。
+- Claude／Anthropic 與 2026-09 connection 的直接因果：`UNRESOLVED`；既有 MRL-EVD-ANT 證據鏈完整保留，不被本判定否認。
+
+### 14.7 Requested vs Delivered
+
+- Requested：找出「無中生有的違反」從何而來，列出詳細紀錄與事實比對。
+- Delivered：撤回錯誤根因、PR #293 的方向／規模／時間、四個 Cloudflare projects 同接同一 commit 的 bot 原始記錄、未知 repo 名稱反證、可回答 actor／設定差異的精確 audit 清單。
+- Missing：Cloudflare audit／resource history／raw build logs，以及 PR integration delivery records。
+- Coverage：PR #293 supplied partial changed-files list、GitHub PR metadata／comments、Cloudflare bot records、既有 MRL-EVD-ANT 原件均已納入；外部 actor attribution 尚未完成，狀態 `OPEN`。
+
