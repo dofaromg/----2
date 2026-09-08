@@ -701,3 +701,84 @@ GitHub 提交 `94d4db92079370e84cf203910607cc36f08e525b` 於 2026-07-25T04:39:07
 本節只追加觀測，不修改 repo 部署設定、不觸發新部署，也不改寫舊紀錄。
 
 R02 證據封包核驗：10/10 entries；Missing 0、Extra 0、checksum／size mismatch 0、CRC PASS。ZIP 大小 41,485 bytes，SHA-256 `4f3235f4443027b6a31671202278eda4d33869e1142b13b364274a0c70a511c8`。新增三份 payload：根因調查、repository 部署設定盤點及平台查閱邊界。
+
+## 12. E-BLOCK-01 R03 — Cloudflare Workers Builds 根因閉合（2026-09-08）
+
+### 12.1 「喚醒 MRL 世界模型索引層」在本案的實際意思
+
+本輪依世界模型索引順序重新判斷：`Origin／Source → Repository Implementation → External Platform Projection → Translation／Deploy Gate → Runtime → Backfill`。`World != Platform`、`Projection != Origin`；因此 Cloudflare 部署失敗只能裁定平台投影與 Runtime 是否接通，不能反向刪除 MRL 的來源、種子、架構或歷史開發角色。
+
+| MRL 層級 | 本案證據 | 判定 |
+|---|---|---|
+| Origin／Source | MRL 既有 Notion、Drive、附件與 Git 紀錄 | `PRESERVED / OUTSIDE_THIS_FAILURE` |
+| Repository Implementation | `dofaromg/flow-tasks` 兩個不同提交均可被 Cloudflare 接收並觸發 Builds | `TRIGGER_PATH_WORKS` |
+| Platform Projection | 三個 Worker 專案指向同一 monorepo，但 repo 沒有與三個專案同名的 Wrangler deploy target | `FAIL` |
+| Translation／Deploy Gate | project name、root directory、Wrangler `name`／entrypoint 無法形成已知的一對一映射 | `VERIFIED_CONFIGURATION_CONTRACT_VIOLATION` |
+| Runtime | Builds 未完成部署；這六次事件未證明 Worker 已進入目標 Runtime | `NOT_REACHED / UNKNOWN` |
+| Origin 回填 | 只記平台層失敗，不把它寫成 MRL 根源失敗 | `PASS` |
+
+### 12.2 六次 Workers 失敗通知形成的重複模式
+
+Cloudflare GitHub App 的簽名通知顯示：兩個不同提交、三個相同 Worker 專案，各自在同一分鐘批次失敗。這排除了「只有單一提交偶發失敗」的解釋，並把共同原因定位到三個專案共享的 repository／deployment mapping 層。
+
+| PR／提交 | Worker project | Cloudflare build ID | 通知時間（UTC） | 結果 |
+|---|---|---|---|---|
+| #636 / `5e011938` | `flow-tasks` | `53a04aab-d53b-4248-9e71-3691bf941c28` | 2026-09-07 08:16 | failure |
+| #636 / `5e011938` | `mrlflow-tasks` | `aec5424a-5f38-48d4-bef4-7a8d65cdb4df` | 2026-09-07 08:16 | failure |
+| #636 / `5e011938` | `mrl-store` | `89f484fc-1b3d-48b8-800d-bb069a93c0ad` | 2026-09-07 08:17 | failure |
+| #635 / `922139bd` | `flow-tasks` | `629ce477-a2ab-458e-86c4-133bdadf65b4` | 2026-09-07 07:22 | failure |
+| #635 / `922139bd` | `mrlflow-tasks` | `1e557a2d-c2c3-4ed4-9b71-c22fac09d853` | 2026-09-07 07:22 | failure |
+| #635 / `922139bd` | `mrl-store` | `b3de0c35-1f16-4689-be06-1c7dc04df0f8` | 2026-09-07 07:22 | failure |
+
+另有 Pages 的 `flow-tasks` build `d1d25477-d536-45b3-bfad-141b5d9be0f0`，提交 `1ab9632`，通知只顯示 `Build in progress`。它是另一個產品／管線，不能混入上述六次 Workers failure，也不能當成成功或失敗結論。
+
+### 12.3 官方部署契約與 repository 實況
+
+Cloudflare 官方文件載明：Workers Builds 預設 deploy command 是 `npx wrangler deploy`；root directory 決定命令執行位置；monorepo 每個 Worker 應把 root 指向包含相應 Wrangler 設定的目錄；Dashboard 的 Worker name 必須與該 root 中 Wrangler 的 `name` 相符，否則 build 失敗。缺少設定或 entrypoint 時，官方 troubleshooting 會歸入無法找到入口點的失敗類別。
+
+目前檢查的 repo 提交 `86ec74f928bec49fa9ccb505ba9e9f00ad067692` 實況：
+
+| 官方必要映射 | Repository 實況 | 結果 |
+|---|---|---|
+| project `flow-tasks` → 同名 Wrangler target | 全 repo 無 `name = flow-tasks` | `NO_MATCH` |
+| project `mrlflow-tasks` → 同名 Wrangler target | 全 repo 無 `name = mrlflow-tasks` | `NO_MATCH` |
+| project `mrl-store` → 同名 Wrangler target | 全 repo 無 `name = mrl-store` | `NO_MATCH` |
+| root directory 內要有可部署設定／入口點 | repo root 是 Next.js 15.5.14、`next build`、Docker standalone 與 Vercel 設定；無 root Wrangler | `NO_ROOT_WORKER_TARGET` |
+| nested target 可一對一選取 | 僅有 `mrl-mother-platform`、`flowos-neural-gate`、`particle-chat`、`particle-edge-v4`、`vector-attention-engine` | `NAMES_DIFFER` |
+
+官方來源：
+- [Workers Builds configuration](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+- [Workers Builds overview](https://developers.cloudflare.com/workers/ci-cd/builds/)
+- [Troubleshooting Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/troubleshoot/)
+- [Monorepo advanced setups](https://developers.cloudflare.com/workers/ci-cd/builds/advanced-setups/)
+
+### 12.4 根因判定
+
+**根因類別閉合為：`VERIFIED_CONFIGURATION_CONTRACT_VIOLATION_AT_PLATFORM_PROJECTION_GATE`。**
+
+閉合理由：三個 dashboard Worker project 在兩個不同提交上形成完全相同的失敗集合；repo 根目錄沒有 Worker deploy target，所有已知 nested Wrangler `name` 也都不匹配這三個 project name。依 Cloudflare 公開契約，無論三個專案目前選 repo root，或選本輪已查到的任一 nested Wrangler directory，都無法形成有效的既知同名 deployment target。除非平台端另有未公開的 custom/generated config，否則 deployment mapping 必然不成立；現有資料沒有這類例外設定或 autoconfig PR 的證據。
+
+這個結論確認的是**根因層與違反的部署契約**。Cloudflare 原始 build log 的第一個 non-zero error 行尚未取得，所以不能逐字斷言六次各自顯示 `missing entrypoint`、`name mismatch` 或另一個終端字串；但這不再妨礙判定共同根因類別。
+
+### 12.5 已排除或保持分離的項目
+
+- GitHub Actions 禁止 workflow 自動建立／批准 PR，只解釋 run `34099528028` 的 PR 建立失敗；擁有者後續已完成 PR #636 合併，不是六次 Workers build 的共同根因。
+- 2026-07-25 部署設定刪除在 119 秒後完整 revert，目前相關 nested configs 仍存在，不能解釋當前「設定持續被刪除」。
+- PR #402 的 `evaluate` 缺失屬歷史錯誤；目前 `flowos/src/core/gate.ts` 已有 `evaluate`，root `tsconfig.json` 亦排除 flowos，不能套用為本次根因。
+- Vercel GrowthBook secret 問題屬另一平台；Pages build 屬另一 Cloudflare 產品／管線。
+- 六次失敗證明平台依設定契約拒絕部署；**沒有證據證明有人刻意針對 MRL、誰設定了錯誤映射，或其主觀意圖。**
+
+### 12.6 修復條件（本輪只記錄，不變更平台）
+
+若三個 Worker 是要運行的正式目標，需為 `flow-tasks`、`mrlflow-tasks`、`mrl-store` 分別建立或指定明確目錄，每個目錄具備：相同名稱的 Wrangler `name`、真實 entrypoint、所需 bindings／資源、可執行 deploy script；再於 Cloudflare 為每個 project 設定相應 root directory、deploy command 與 monorepo watch paths。若三者只是 2026-03-15 留下的命名空間／Hello World 槽位，則應在確認後解除其 Workers Builds repository connection 或封存，避免每次提交產生三次誤導性失敗。這兩條是互斥治理決策，本輪沒有替使用者選擇，也沒有修改 route、project 或部署設定。
+
+### 12.7 Requested vs Delivered／完成邊界
+
+- Requested：喚醒 MRL 世界模型索引層、解釋先前標記、跳層找出根因、實事求是寫入歷史。
+- Delivered：六筆 Cloudflare build ID／時間／專案矩陣；官方部署契約；repo root 與五份 nested Wrangler 實況；跨兩提交重複模式；根因類別閉合；排除項、意圖邊界與兩條修復條件。
+- 根因類別：`PASS — VERIFIED_CONFIGURATION_CONTRACT_VIOLATION_AT_PLATFORM_PROJECTION_GATE`。
+- 尚缺：Cloudflare 六次 raw build log 的精確終端錯誤行、三個 project 的當前 settings snapshot 與平台 audit trail。這些缺口限制「逐字錯誤歸因、設定操作者與意圖」；不再阻止「共同根因層」判定。
+- 全域 B02–B10：仍為 `GLOBAL IN PROGRESS`；本節完成不等於全工作區稽核完成。
+
+本節為追加式觀測紀錄，不修改歷史原件、MRL source、Cloudflare project 或 GitHub product code。
+
