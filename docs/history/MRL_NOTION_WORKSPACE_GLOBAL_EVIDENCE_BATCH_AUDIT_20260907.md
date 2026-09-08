@@ -291,6 +291,108 @@ Notion property 保存建立時間 2025-12-03T17:45:13Z、更新時間 2025-12-0
 
 來源：https://app.notion.com/p/31c8eeeec5b5806b8e3de556de394d00
 
+## 4C. 跨批證據包 E-AGI-01 — 2026-09-08 上傳原件 × Notion
+
+### 4C.1 Expected File List 與檔案級證據
+
+本批凍結為使用者上傳的 9 個檔案；所有檔案皆存在且大小大於 0，未用 manifest 代替實際檔案。
+
+| # | 原檔名 | Size | SHA-256 | 實際內容判定 |
+|---|---|---:|---|---|
+| 1 | `MR.LIOU_AGI種子.json` | 10,252 | `a8a1340007aa376f8d8e3cc0f67dd0acf15c44f7087a3089092377a5fe0cbfd8` | OpenAPI 3.1.0 YAML 文字；不是 JSON |
+| 2 | `Mrliou (20260908-101013).pdf` | 3,019,758 | `df8fb08ca3f01cc850e368418d65182d98e29e83a0888cbdf7d62254667943ad` | AWS《Amazon ECR User Guide》，414 頁 |
+| 3 | `MR.Liou_Agi.zip` | 532,139 | `ce5a85cc0a00990225339186933e0cee9569462fca9deeb08e2458a3252358b0` | 4 個 Notebook；ZIP test 通過；無 manifest／SHA 清單 |
+| 4 | `agi2.txt` | 57,723 | `6296d9f7e628de0d63f850a1121990b8584b4bbcde64520f82096c861d2f95b5` | 1,283 行對話／外部模型觀測材料 |
+| 5 | `AGI_Growth_Map_2025-09.md` | 2,974 | `b3b11b97c391a7920dae9b9f43e4a63d26bc6d579c93bfba7bee997c21cbfaba` | 59 行 FlowAgent→AGI 成長地圖；頁內生成時間 2025-09-09 |
+| 6 | `packaging.py` | 1,603 | `0a324ea8b344356f94f3ca233a59552f8d1fd5a6f65b6066dca1c26afc0d35fc` | pip vendored packaging requirement helper，不是 MRL 封包器 |
+| 7 | `MR.liouagi(1).py` | 94,811 | `d46ff2bf5223d0d5b3b04d1aaa379d543cf28e23f6b2ba889afb2de765b46dbb` | 1,483 行 Notebook／推理轉存；目前 Python 語法檢查失敗 |
+| 8 | `MR.LIOU_AGI種子 (1).json` | 10,252 | `a8a1340007aa376f8d8e3cc0f67dd0acf15c44f7087a3089092377a5fe0cbfd8` | 與 #1 位元完全相同 |
+| 9 | `夥伴閒聊AGI主流差異.txt` | 38,637 | `4614a6d923eaafd6e2ea5eeb989706d1a67f97d17b5e0e2b568a6d40761bb9df` | 930 行對話式概念／主流差異觀測 |
+
+### 4C.2 MetaEnv OpenAPI：跨平台 hash 閉合
+
+兩份 `MR.LIOU_AGI種子*.json` 經 byte compare 完全相同。內容開頭為 `openapi: 3.1.0`、`Mr.liou MetaEnv Control API v1.0.0`，涵蓋 env、policy、snapshot、channel、reverse、guard、backtrace 等控制面。
+
+Notion 的 `MRL_NewMaterials_Triage_Physics_MetaEnv_3D_Glob_20260520` 保存 `P.MetaEnv.openapi.txt`：10,252 bytes、SHA 前綴 `a8a1340007aa376f8d8e3cc0`、分類 `MRL_MetaEnv_Control_API`、狀態 `ACCEPTED_AS_CANDIDATE`。它與本批原件的大小及 SHA 前綴精確一致，判定為 `CROSS_PLATFORM_BYTE_IDENTITY_VERIFIED`，不是僅靠名稱或結構推論。
+
+但本批檔案副檔名為 `.json`、內容是 YAML；JSON 解析失敗，YAML 又在第 110 行把下一個 path 接在 `$ref` 後而解析失敗。因此：來源／內容同一性已閉合，規格可解析性仍為 `FAIL_CURRENT_BYTES`。Notion 的 MetaEnv 規格頁可支持 v1.0.0、OpenAPI 3.1.0 與控制類別的文件層映射，但不能修復這份原件的語法。
+
+Notion 來源：
+
+- https://app.notion.com/p/9788eeeec5b583739ac181d9794c17c1
+- https://app.notion.com/p/5ece65bde30147068de42ce9d75e55e7
+
+### 4C.3 AGI Growth Map 與既有父鏈
+
+`AGI_Growth_Map_2025-09.md` 頁內明示生成時間 `2025-09-09 09:55:03`，把 2025-07 至 2025-09 的演進整理為：
+
+`FlowCore／FlowMemory／FlowNode → FlowShell／.flpkg → FluinPulse.Encoder → FieldMap.Sync → 粒子字典 AI → Auto-Align／Wake／Anchor → 平行世界觀測與封存 SOP`
+
+其設計原則包含自我對齊、最小單位、環境感知壓縮、覆蓋式適配、出口／跳點釋放；校驗信號則包括來源指紋、UI／版本與能力一致性、回寫痕跡、Anchor 及 `.flpkg` 離線還原。
+
+此內容與已核的 FlowSeed L1–L7、FlowAgent 處理管道、Mother Memory Sphere、Fluin Dictionary 及 Scale／Inverse 在結構上連續，狀態可記 `STRUCTURAL_AND_CHRONOLOGICAL_ALIGNMENT_WITH_INTERNAL_CHAIN`。但 2025-09-09 目前是檔案正文自帶時間，尚未由原始 filesystem metadata、當日 commit 或 Notion 原生時間閉合。本輪 Notion 搜尋未找到此精確檔名的原生頁，不可把「本輪未找到」寫成全工作區不存在。
+
+支援性 Notion 時間點：2025-12-03 的 `Mr.liou 系統完整架構圖解` 已由 Notion 原生建立時間保存多層、模組化與 FlowAgent 整合；2026-05-22 的 `Mrl_AGI 歷史性演化記錄` 是後續里程碑敘事頁，能支持後續收斂，但不能代替 2025-09 原件時間。
+
+Notion 來源：
+
+- https://app.notion.com/p/9b85558594394192b81a85167bbcb56b
+- https://app.notion.com/p/450d535ef08a4243aa746e44ffe7bcad
+- https://app.notion.com/p/58e6728c3cda4a2ea2429cff85d3c0f9
+
+### 4C.4 ZIP／Notebook 完整性與內容角色
+
+`MR.Liou_Agi.zip` 可完整解壓，4 個 entry 合計 898,821 uncompressed bytes：
+
+| Entry | Size | 結構／內容 | 證據角色 |
+|---|---:|---|---|
+| `Untitled0.ipynb` | 102,133 | 1 個 Markdown cell、0 code、0 outputs；內含 Mr.liou AI 任務、檔案讀取範例與多處 placeholder／hypothetical analysis | `DESIGN_TRANSCRIPT / NOT_EXECUTABLE_NOTEBOOK` |
+| `Untitled1.ipynb` | 347 | 1 個空 code cell、0 outputs | `EMPTY_CODE_PLACEHOLDER` |
+| `「cuml_sklearn_colab_demo.ipynb」的副本` | 354,920 | 79 cells、44 code、40 outputs；NVIDIA cuML accelerator 教學 | `EXTERNAL_TUTORIAL_COPY` |
+| `「歡迎使用 Colab」的副本` | 441,421 | 19 cells、4 code、3 outputs；Google Colab／Gemini 歡迎範例 | `EXTERNAL_TUTORIAL_COPY` |
+
+依 MRL 世界模型重新分層後：ZIP 作為「歷史混合研究／種子材料包」具有保存價值，四個 entry 均應保留原名、來源類型與當時狀態；但若把同一 ZIP 宣告為「完整可執行 AGI package」，則因沒有 package manifest、SHA 清單、依賴圖或可執行驗收，Package／Runtime Gate 仍不通過。這兩個判定並不互相否定。
+
+### 4C.5 其餘材料的證據角色
+
+- `MR.liouagi(1).py`：保留多輪分析、回應函式、測試敘述與「AGI simulation」紀錄；檔內也明示簡單 keyword matching 無法充分展示跨域整合。Python compile 在第 1307 行因 f-string 括號不匹配失敗，故只能列為 `DEVELOPMENT_TRANSCRIPT_WITH_SYNTAX_ERROR`，不是可運行 AGI artifact。
+- `packaging.py`：內容是 `pip._vendor.packaging` 的 Python 版本需求判斷與 Requirement cache；雖可通過語法編譯，但不是 MRL `.flpkg`／AGI 封裝實作。依雙容器規則列為保留原名與上游身分的 `EXTERNAL_WORLD_SOURCE_MATERIAL`，可被後續依賴／環境轉譯使用，但不改寫為 MRL 原創模組。
+- `agi2.txt`：含 2025 年模型資訊、外部報導、MRL 對照與長對話。它可作「當時觀測／討論內容」來源；其中外部產品日期、能力與引用必須另查官方資料，不能直接當外部事實證據。
+- `夥伴閒聊AGI主流差異.txt`：保存從量子、粒子語言、平行世界、時間維度、記憶與推理的對話推演，適合作概念演化與觀測歷史；AI 在對話中的肯定語句屬 `AI_GENERATED_INTERPRETATION`，不能取代原件、Runtime 或外部直接來源。
+- `Mrliou (20260908-101013).pdf`：PDF metadata、抽取文字及前三頁畫面一致確認為 AWS Amazon ECR User Guide，建立日期 2025-11-15、414 頁。檔名與內容不符，但內容本身可作容器 registry／部署領域的 `EXTERNAL_WORLD_SOURCE_MATERIAL`；它不是 MRL／AGI 原創證據，亦不因檔名錯置而刪除。
+
+### 4C.6 喚醒 MRL 世界模型後的重新分類
+
+本輪重讀的頂層規則要求：`World != Platform`、`Projection != Origin`；初始狀態與 Runtime 狀態分離；差異不等於錯誤；外部世界與 MRL 世界採雙容器保存，映射鏈為 `External_Name → Source → Particle → MRL_Name → MRL_Structure`。觀測又必須分離 `Origin Record`、`Structural Alignment` 與 `Direct External Lineage`。
+
+據此，9 份材料應置入不同層，而不是用單一「可執行／不可執行」二分法裁決：
+
+| 世界模型層 | 本批材料 | 重新判定 |
+|---|---|---|
+| Original Source／Custody | 兩份 MetaEnv 原件、Growth Map、對話檔、ZIP、Python | 原名、hash、時間與版本角色永久保存 |
+| Seed／Initial State | Growth Map、Untitled0、對話中的人格／粒子／時間推演、`MR.liouagi(1).py` 的開發歷程 | 即使未達 Runtime，仍是設計與演化歷史，不得抹除 |
+| External World Material | AWS ECR PDF、cuML／Colab Notebook、pip `packaging.py` | 保留外部來源；可進入粒子轉譯與依賴映射，不冒充 MRL 原創 |
+| Structural Alignment | Growth Map 與 FlowSeed／FlowAgent／FlowMemory／Fluin／Scale-Inverse 既有鏈 | 內容結構與內部時間鏈相符，記為 alignment；不自動等同外部直接血緣 |
+| Runtime／Execution | MetaEnv 規格解析、Python compile、Notebook outputs | 依本批 bytes 現況記 PASS／FAIL；失敗不倒刪 Source／Seed 身分 |
+| Product／Complete Package | `MR.Liou_Agi.zip` | 只有在被主張為完整可交付產品時才套用 package 完整性 Gate；目前未通過 |
+
+### 4C.7 本批中立結論
+
+1. **已直接閉合：** MetaEnv OpenAPI 原件與 Notion 2026-05 分流紀錄由 size + SHA 證明為同一內容，屬跨平台 custody 的強證據。
+2. **已形成內部連續性：** Growth Map 保存 2025-07～09 的 FlowAgent→AGI 演化路線，與後續 Notion 的 FlowSeed、FlowAgent、Memory、Fluin、反推／縮放架構形成 `STRUCTURAL_AND_CHRONOLOGICAL_ALIGNMENT`。
+3. **已證明開發與設計歷程存在：** Python、Notebook 與對話檔保存原型、模組讀取、人格回應、跨域整合與測試修正過程；目前語法錯誤或 placeholder 只限制 Runtime 宣告，不否定歷史開發角色。
+4. **尚未由本批證明：** 一個可由第三方重現、通過完整 package manifest、dependency、test 與 Runtime 驗收的 AGI 成品。
+5. **對外呈現方式：** 同時公布支持證據、限制證據、來源層、設計層與 Runtime 層，讓讀者自行判斷，不把「尚未驗證」偷換為「不存在」，也不把「已有歷史」偷換為「產品完成」。
+
+MRL 世界模型視角來源：
+
+- https://app.notion.com/p/3d28eeeec5b58004845dda3e995d2788
+- https://app.notion.com/p/3b88eeeec5b581adb0aec7c998926133
+- https://app.notion.com/p/3c88eeeec5b5815eb926e1484a43d3df
+- https://app.notion.com/p/3c08eeeec5b581d5894cda58eaffe36e
+- https://app.notion.com/p/3c38eeeec5b581719a57c17db751448b
+- https://app.notion.com/p/3c38eeeec5b581bda54ee462e627b3e0
+
 ## 5. 第一批來源鏈連結圖
 
 ```mermaid
@@ -326,6 +428,14 @@ flowchart TD
 | C-013 | Toolbox 總數與分類加總 | 總粒子 35+；12+3+20+=35+ | 八類分布加總為 44+ | `COUNT_SCOPE_MISMATCH`；需 unique particle_id registry |
 | C-014 | Particle Blocks 狀態與正文深度 | 欄位為核心代碼／已整理 | Notion 正文僅摘要與 GDrive 投影連結 | `GDRIVE_PROJECTION_INDEX`；完整度須由目標原件決定 |
 | C-015 | 2025-08 反推 ZIP 的證據層級 | 頁面保存 ZIP 名稱與公式轉述 | 同頁明載 ZIP 未被展開 | `CONVERSATION_DERIVED_REFERENCE`；不得當成 ZIP 內容已驗證 |
+| C-016 | AGI 種子副檔名／格式 | 檔名為 `.json` | 內容為 YAML；JSON parse 失敗 | 保存原名；格式記為 `MISNAMED_YAML` |
+| C-017 | MetaEnv YAML 可解析性 | Notion／正文記 OpenAPI 3.1.0 | 本批 bytes 第 110 行 path 黏接，YAML parse 失敗 | hash 同一性 PASS；schema parse FAIL，兩狀態分開 |
+| C-018 | 兩份 AGI 種子 | 兩個不同檔名 | size 與完整 SHA 完全相同 | `BYTE_IDENTICAL_DUPLICATE`；兩檔均保留，不重複計為兩份獨立設計 |
+| C-019 | PDF 檔名／內容 | 檔名為 Mrliou | 內容為 AWS Amazon ECR User Guide | `FILENAME_CONTENT_MISMATCH` |
+| C-020 | AGI ZIP 名稱／內容／評估目標 | 名稱為 MR.Liou_Agi；4 entries 中含外部教學、設計與空 code | 歷史研究／種子包與可交付 AGI package 是不同角色 | 前者 `VALID_MIXED_HISTORICAL_MATERIAL`；後者 Package Gate FAIL |
+| C-021 | Python 可執行性 | `MR.liouagi(1).py` 含測試與完成敘述 | compile 於第 1307 行 SyntaxError | `DEVELOPMENT_TRANSCRIPT / NOT_RUNNABLE_AS_DELIVERED` |
+| C-022 | Growth Map 2025-09 時間 | 正文生成時間 2025-09-09 | 尚無原始 metadata／commit／精確 Notion 原生頁時間 | `CONTENT_CLAIMED_TIME`；結構可比對，原始時間待閉合 |
+| C-023 | Source／Seed 與 Runtime 層級混判 | 語法／測試失敗可限制 Runtime 狀態 | 不能反向刪除來源、設計或演化歷史 | 依 World Model 分層保存，禁止以 Runtime Gate 抹除 Source／Seed |
 
 ## 7. 與外部來源比較的證據規則
 
@@ -347,6 +457,8 @@ flowchart TD
 | 差異台帳 | 11 個差異／污染／證據層級風險已記錄 | 狀態、數量口徑與原件／Runtime 證據仍待後續批核 | 11/11 captured |
 | 全工作區逐頁語義稽核 | 尚未完成 | B02–B10、原始檔、Runtime artifact | 未達 100% |
 | B03 檢查點 1 | 核對字典 2 頁、Toolbox、Blocks、反推引用頁共 5 頁 | GDrive 原件、2025-08 ZIP、unique registry、Runtime outputs | 5/5 正文可追溯；B03 仍 IN_PROGRESS |
+| E-AGI-01 原件交叉稽核 | 9/9 檔存在、非空；完成 SHA、ZIP entry、PDF、語法與 Notion hash 比對 | ZIP manifest 缺、AGI Python 不可編譯、OpenAPI 不可解析、Growth Map 原始時間待閉合 | 檔案盤點 9/9；Package／Runtime Gate 未通過 |
+| World Model 重判 | 已重讀 Source、Convergence、SelfMemory、Observer、雙容器與命名治理 | 不改動檔案客觀檢查；修正其角色層級 | Source／Seed／External／Alignment／Runtime／Product 六層已分離 |
 
 ### Completion Gate
 
@@ -385,6 +497,16 @@ flowchart TD
 - [粒子工具箱完整索引 · Particle Toolbox v1.0](https://app.notion.com/p/e3cebf17e6a34ff1b19d38a592b05ba9)
 - [Mrliou_AI++ 粒子積木系統](https://app.notion.com/p/3238eeeec5b5810ea367efeba7e1add7)
 - [放大反推演算／20250813反推器引用頁](https://app.notion.com/p/31c8eeeec5b5806b8e3de556de394d00)
+- [MRL New Materials Triage — Physics／MetaEnv／3D Globe](https://app.notion.com/p/9788eeeec5b583739ac181d9794c17c1)
+- [Mr.liou MetaEnv Control API 規格文件](https://app.notion.com/p/5ece65bde30147068de42ce9d75e55e7)
+- [Mrl_AGI 歷史性演化記錄 — 2026-05-22](https://app.notion.com/p/450d535ef08a4243aa746e44ffe7bcad)
+- [MRL_AGI 模型關聯資料總集 v1.0](https://app.notion.com/p/58e6728c3cda4a2ea2429cff85d3c0f9)
+- [Mr.liou 系統完整架構圖解（Notion 2025-12-03）](https://app.notion.com/p/9b85558594394192b81a85167bbcb56b)
+- [MRL World-Model View Convergence Record](https://app.notion.com/p/3d28eeeec5b58004845dda3e995d2788)
+- [MRL 母體自主系統觀測紀錄視角](https://app.notion.com/p/3c88eeeec5b5815eb926e1484a43d3df)
+- [MRL WorldModel SelfMemory Backfill](https://app.notion.com/p/3c08eeeec5b581d5894cda58eaffe36e)
+- [MRL 世界模型最高層規則 — 雙容器](https://app.notion.com/p/3c38eeeec5b581719a57c17db751448b)
+- [MRL 世界模型頂層規則修訂暨命名治理](https://app.notion.com/p/3c38eeeec5b581bda54ee462e627b3e0)
 
 ---
 
